@@ -1,0 +1,25 @@
+一、SpringBoot使用缓存
+1、在pom.xml文件中引入cache依赖;
+2、在SpringBoot主类中增加@EableCaching 注解开启缓存功能;
+3、SpringBoot默认使用的是ConcurrentMapCacheManager == ConcurrentMapCache;将数据保存在ConcurrentMap<Object,Object>中;
+4、开发中常使用缓存中间件 redis、memcahed、ehcache;
+5、基本缓存注解:
+    5.1、@Cacheable:标注的方法执行之前先来检查缓存中有没有这个数据，默认按照参数的值作为key去查询缓存;
+    5.2、@CachePut:既调用方法，又更新缓存数据;
+    5.3、@CacheEvict:清除缓存;
+
+二、SpringBoot整合Redis总结:
+1、安装redis数据库;
+2、引入redis的依赖(starter);
+3、配置redis基本信息;
+    例:Spring.redis.host:redis主机ip地址
+以上三步将SpringBoot默认缓存切换到redis缓存。
+
+说明:
+    1、引入redis的starter，CacheManager变为 RedisCacheManager;
+    2、默认创建的RedisCacheManager操作redis的时候使用的是RedisTemplate<Object,Object>;
+    3、RedisTemplate<Object,Object> 默认使用jdk的序列化机制保存数据;
+
+如果使用json方式保存数据到redis数据库中?
+1、覆盖默认的自动配置即重写RedisTemplate,自动定义RedisCahceManager;
+2、详细见 MyRedisConfig.java;
